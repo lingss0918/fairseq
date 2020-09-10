@@ -7,7 +7,6 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-
 class GumbelVectorQuantizer(nn.Module):
     def __init__(
         self,
@@ -135,7 +134,6 @@ class GumbelVectorQuantizer(nn.Module):
         return res["x"], res["targets"]
 
     def forward(self, x, produce_targets=False):
-
         result = {"num_vars": self.num_vars * self.groups}
 
         if not self.time_first:
@@ -167,7 +165,7 @@ class GumbelVectorQuantizer(nn.Module):
         result["temp"] = self.curr_temp
 
         if self.training:
-            x = F.gumbel_softmax(x.float(), tau=self.curr_temp, hard=True).type_as(x)
+            x = F.gumbel_softmax(x.float(), tau=0.1, hard=True).type_as(x)
         else:
             x = hard_x
 
